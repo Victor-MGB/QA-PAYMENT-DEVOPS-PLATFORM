@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Production-grade QA automation platform with DevOps integration",
   "scripts": {
+    "start:server": "node -e \"const app = require('./tests/api/server'); app.listen(3000, () => console.log('Server running on port 3000'));\"",
     "test:api": "jest tests/api --coverage",
-    "test:ui": "cypress run",
+    "test:ui": "cypress run --config-file tests/ui/cypress.config.js",
     "test:perf": "k6 run tests/performance/load-test.js",
     "test:all": "npm run test:api && npm run test:ui",
     "report": "allure generate reports/allure-results -o reports/allure-report --clean"
@@ -13,6 +14,7 @@
     "jest": "^29.0.0",
     "supertest": "^6.3.0",
     "cypress": "^13.0.0",
+    "express": "^4.18.0",
     "@jest/globals": "^29.0.0",
     "allure-jest": "^2.0.0",
     "allure-commandline": "^2.24.0"
