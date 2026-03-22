@@ -1,0 +1,392 @@
+{
+  "state": {
+    "isStdOutTTY": true,
+    "isStdErrTTY": true,
+    "testRunDurationMs": 212303.57211
+  },
+  "metrics": {
+    "iteration_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 2504.989657,
+        "med": 2961.5025995,
+        "max": 30787.858582,
+        "p(90)": 4536.23945,
+        "p(95)": 5106.397789849999,
+        "avg": 3395.608472540139
+      }
+    },
+    "iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 24320,
+        "rate": 114.55294773560934
+      }
+    },
+    "http_req_tls_handshaking": {
+      "values": {
+        "p(95)": 0,
+        "avg": 0,
+        "min": 0,
+        "med": 0,
+        "max": 0,
+        "p(90)": 0
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "vus": {
+      "contains": "default",
+      "values": {
+        "value": 6,
+        "min": 1,
+        "max": 1000
+      },
+      "type": "gauge"
+    },
+    "http_req_duration{expected_response:true}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 0.496804,
+        "med": 98.951571,
+        "max": 27869.071803,
+        "p(90)": 512.9649763000004,
+        "p(95)": 699.6181137,
+        "avg": 231.49632249562669
+      }
+    },
+    "http_req_failed": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "fails": 72960,
+        "rate": 0.25,
+        "passes": 24320
+      },
+      "thresholds": {
+        "rate<0.05": {
+          "ok": false
+        }
+      }
+    },
+    "checks": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "fails": 7653,
+        "rate": 0.9713927930622009,
+        "passes": 259867
+      }
+    },
+    "data_sent": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 20751054,
+        "rate": 97742.3685987174
+      }
+    },
+    "transfer_duration": {
+      "type": "trend",
+      "contains": "default",
+      "values": {
+        "avg": 176.78515625,
+        "min": 0,
+        "med": 98,
+        "max": 998,
+        "p(90)": 483,
+        "p(95)": 686.0499999999993
+      },
+      "thresholds": {
+        "p(95)<600": {
+          "ok": false
+        }
+      }
+    },
+    "total_payments": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 24320,
+        "rate": 114.55294773560934
+      }
+    },
+    "http_req_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 222.11713896681763,
+        "min": 0.496804,
+        "med": 100.951608,
+        "max": 27869.071803,
+        "p(90)": 520.1587747000001,
+        "p(95)": 712.4508587000003
+      },
+      "thresholds": {
+        "p(95)<500": {
+          "ok": false
+        }
+      }
+    },
+    "data_received": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 37956602,
+        "rate": 178784.5660003012
+      }
+    },
+    "http_req_sending": {
+      "values": {
+        "p(90)": 0.06479910000000005,
+        "p(95)": 0.12590915000000005,
+        "avg": 0.08070124771792792,
+        "min": 0.011549,
+        "med": 0.031092500000000002,
+        "max": 137.533837
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "http_req_receiving": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0.18140224148848824,
+        "min": 0.029821,
+        "med": 0.0881895,
+        "max": 448.140039,
+        "p(90)": 0.23738910000000005,
+        "p(95)": 0.43638465000000004
+      }
+    },
+    "vus_max": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "min": 1000,
+        "max": 1000,
+        "value": 1000
+      }
+    },
+    "http_req_connecting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 0,
+        "avg": 0.006692667660361841,
+        "min": 0,
+        "med": 0,
+        "max": 22.687275,
+        "p(90)": 0
+      }
+    },
+    "error_rate": {
+      "values": {
+        "passes": 7653,
+        "fails": 65307,
+        "rate": 0.10489309210526315
+      },
+      "thresholds": {
+        "rate<0.05": {
+          "ok": false
+        }
+      },
+      "type": "rate",
+      "contains": "default"
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 97280,
+        "rate": 458.21179094243735
+      }
+    },
+    "http_req_blocked": {
+      "contains": "time",
+      "values": {
+        "min": 0.003737,
+        "med": 0.008373499999999999,
+        "max": 22.798003,
+        "p(90)": 0.01223,
+        "p(95)": 0.01713005,
+        "avg": 0.020750223725328944
+      },
+      "type": "trend"
+    },
+    "payment_duration": {
+      "type": "trend",
+      "contains": "default",
+      "values": {
+        "avg": 341.6754523026316,
+        "min": 0,
+        "med": 101,
+        "max": 27870,
+        "p(90)": 558,
+        "p(95)": 761
+      },
+      "thresholds": {
+        "p(95)<600": {
+          "ok": false
+        }
+      }
+    },
+    "http_req_waiting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 100.7260875,
+        "max": 27868.889975,
+        "p(90)": 519.6866314000001,
+        "p(95)": 712.0647519500002,
+        "avg": 221.8550354776123,
+        "min": 0.417406
+      }
+    },
+    "group_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 222.551760401305,
+        "min": 0.678867,
+        "med": 101.292569,
+        "max": 27870.436231,
+        "p(90)": 520.6942274,
+        "p(95)": 712.8493360500004
+      }
+    }
+  },
+  "root_group": {
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": [
+      {
+        "path": "::Payment Initialization",
+        "id": "cd026af9ab4bbf8be72135f33bc7de79",
+        "groups": [],
+        "checks": [
+            {
+              "path": "::Payment Initialization::status 200",
+              "id": "8c49e5cfe05ab995012db6722d4342dd",
+              "passes": 24320,
+              "fails": 0,
+              "name": "status 200"
+            },
+            {
+              "path": "::Payment Initialization::has reference",
+              "id": "783787d32149dad3b0c4a260e0fdab55",
+              "passes": 24320,
+              "fails": 0,
+              "name": "has reference"
+            },
+            {
+              "name": "response < 500ms",
+              "path": "::Payment Initialization::response < 500ms",
+              "id": "df87786fdeb2f62f32a12be1b6197ff9",
+              "passes": 21352,
+              "fails": 2968
+            }
+          ],
+        "name": "Payment Initialization"
+      },
+      {
+        "name": "Transaction Verification (Simulated Webhook)",
+        "path": "::Transaction Verification (Simulated Webhook)",
+        "id": "a408ef89bd01b3de9ae384f9f1ed64f7",
+        "groups": [],
+        "checks": [
+            {
+              "name": "status 200",
+              "path": "::Transaction Verification (Simulated Webhook)::status 200",
+              "id": "57476b366c05a8a8125200291afb64b0",
+              "passes": 24320,
+              "fails": 0
+            },
+            {
+              "name": "verified success",
+              "path": "::Transaction Verification (Simulated Webhook)::verified success",
+              "id": "05f11a8e17c559cf3e1000aa4c4b59a7",
+              "passes": 24320,
+              "fails": 0
+            },
+            {
+              "passes": 21945,
+              "fails": 2375,
+              "name": "response < 500ms",
+              "path": "::Transaction Verification (Simulated Webhook)::response < 500ms",
+              "id": "e8824fd602f672afc8b91ec2b27e42e0"
+            }
+          ]
+      },
+      {
+        "name": "Fund Transfer",
+        "path": "::Fund Transfer",
+        "id": "3879da621b9469d0bee3d2dbae0366ef",
+        "groups": [],
+        "checks": [
+            {
+              "name": "status 200",
+              "path": "::Fund Transfer::status 200",
+              "id": "5f4785bbf5ef997e21c39550bfac58bd",
+              "passes": 24320,
+              "fails": 0
+            },
+            {
+              "name": "transfer pending",
+              "path": "::Fund Transfer::transfer pending",
+              "id": "496c5a7397e1b506da7c038eb25d16d2",
+              "passes": 24320,
+              "fails": 0
+            },
+            {
+              "path": "::Fund Transfer::transfer code exists",
+              "id": "88093408cf7a191ecd2f61964333256f",
+              "passes": 24320,
+              "fails": 0,
+              "name": "transfer code exists"
+            },
+            {
+              "name": "response < 500ms",
+              "path": "::Fund Transfer::response < 500ms",
+              "id": "383fae565c755d1f442c8f122264a9f0",
+              "passes": 22010,
+              "fails": 2310
+            }
+          ]
+      },
+      {
+        "name": "Auth Failure Handling",
+        "path": "::Auth Failure Handling",
+        "id": "3be73b22feb41652066318b822892f65",
+        "groups": [],
+        "checks": [
+            {
+              "name": "unauth returns 401",
+              "path": "::Auth Failure Handling::unauth returns 401",
+              "id": "aac1e01ac23a3f5061ecb27be5a634fd",
+              "passes": 24320,
+              "fails": 0
+            }
+          ]
+      }
+    ],
+    "checks": [],
+    "name": ""
+  },
+  "options": {
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": "",
+    "noColor": false
+  }
+}
