@@ -1,0 +1,11 @@
+node_modules/
+reports/allure-results/
+reports/allure-report/
+.terraform/
+*.tfstate
+*.tfstate.backup
+.env
+*.pem
+*.key
+dist/
+.DS_Store

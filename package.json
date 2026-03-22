@@ -1,0 +1,20 @@
+{
+  "name": "qa-devops-platform",
+  "version": "1.0.0",
+  "description": "Production-grade QA automation platform with DevOps integration",
+  "scripts": {
+    "test:api": "jest tests/api --coverage",
+    "test:ui": "cypress run",
+    "test:perf": "k6 run tests/performance/load-test.js",
+    "test:all": "npm run test:api && npm run test:ui",
+    "report": "allure generate reports/allure-results -o reports/allure-report --clean"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "supertest": "^6.3.0",
+    "cypress": "^13.0.0",
+    "@jest/globals": "^29.0.0",
+    "allure-jest": "^2.0.0",
+    "allure-commandline": "^2.24.0"
+  }
+}
