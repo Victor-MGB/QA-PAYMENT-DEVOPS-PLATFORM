@@ -79,4 +79,9 @@ app.post('/api/v1/webhook', (req, res) => {
   res.status(200).json({ status: true, message: 'Webhook received' });
 });
 
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 module.exports = app;
