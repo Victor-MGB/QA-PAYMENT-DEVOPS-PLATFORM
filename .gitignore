@@ -9,3 +9,5 @@ reports/allure-report/
 *.key
 dist/
 .DS_Store
+terraform/qa-devops-key
+        terraform/qa-devops-key.pub
