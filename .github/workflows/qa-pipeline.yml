@@ -33,7 +33,7 @@ jobs:
         run: npm run test:api
 
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: api-coverage
@@ -70,7 +70,7 @@ jobs:
         run: npx cypress run --config-file tests/ui/cypress.config.js
 
       - name: Upload screenshots on failure
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots
@@ -117,7 +117,7 @@ jobs:
         run: k6 run tests/performance/load-test.js
 
       - name: Upload k6 report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: k6-report
