@@ -2,9 +2,9 @@ name: QA DevOps Platform - CI/CD Pipeline
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, staging]
   pull_request:
-    branches: [main]
+    branches: [main, develop, staging]
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -13,21 +13,26 @@ env:
 jobs:
 
   api-tests:
-    name: API Tests (Jest + Supertest)
-    runs-on: ubuntu-latest
-
+    name: API Tests
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
 
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci
 
       - name: Run API tests
         run: npm run test:api
@@ -40,22 +45,27 @@ jobs:
           path: reports/coverage/
 
   cypress-tests:
-    name: UI Tests (Cypress)
-    runs-on: ubuntu-latest
+    name: UI Tests
+    runs-on: ubuntu-22.04
     needs: api-tests
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
 
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci
 
       - name: Start API server
         run: |
@@ -63,8 +73,11 @@ jobs:
             const app = require('./tests/api/server');
             app.listen(3000, () => console.log('Server running'));
           " &
-          sleep 3
-          curl -f http://localhost:3000/health
+          # Wait until API server responds
+          until curl -f http://localhost:3000/health; do
+            echo "Waiting for API server..."
+            sleep 1
+          done
 
       - name: Run Cypress tests
         run: npx cypress run --config-file tests/ui/cypress.config.js
@@ -77,33 +90,30 @@ jobs:
           path: reports/screenshots/
 
   performance-tests:
-    name: Performance Tests (k6)
-    runs-on: ubuntu-latest
-    needs: cypress-tests
-
+    name: Performance Tests
+    runs-on: ubuntu-22.04
+    needs: [api-tests, cypress-tests]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install k6
-        run: |
-          sudo gpg -k
-          sudo gpg --no-default-keyring \
-            --keyring /usr/share/keyrings/k6-archive-keyring.gpg \
-            --keyserver hkp://keyserver.ubuntu.com:80 \
-            --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
-          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" \
-            | sudo tee /etc/apt/sources.list.d/k6.list
-          sudo apt-get update && sudo apt-get install -y k6
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
 
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci
+
+      - name: Install k6
+        uses: grafana/setup-k6@v1
 
       - name: Start API server
         run: |
@@ -111,7 +121,10 @@ jobs:
             const app = require('./tests/api/server');
             app.listen(3000, () => console.log('Server running'));
           " &
-          sleep 3
+          until curl -f http://localhost:3000/health; do
+            echo "Waiting for API server..."
+            sleep 1
+          done
 
       - name: Run k6 load test
         run: k6 run tests/performance/load-test.js
@@ -124,14 +137,13 @@ jobs:
           path: reports/k6-summary.json
 
   build-and-push:
-    name: Build and Push Docker Image to ECR
-    runs-on: ubuntu-latest
+    name: Build & Push Docker
+    runs-on: ubuntu-22.04
     needs: [api-tests, cypress-tests]
     if: github.ref == 'refs/heads/main'
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -142,28 +154,27 @@ jobs:
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, tag and push image
+      - name: Build, tag, and push image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -f docker/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --cache-from $ECR_REGISTRY/$ECR_REPOSITORY:latest -f docker/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           echo "IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
   deploy-to-ec2:
-    name: Deploy to EC2 via Ansible
-    runs-on: ubuntu-latest
+    name: Deploy to EC2
+    runs-on: ubuntu-22.04
     needs: build-and-push
     if: github.ref == 'refs/heads/main'
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -183,7 +194,7 @@ jobs:
           echo "EC2_IP=$EC2_IP" >> $GITHUB_OUTPUT
 
       - name: Install Ansible
-        run: sudo apt-get install -y ansible
+        run: sudo apt-get update && sudo apt-get install -y ansible
 
       - name: Write SSH private key
         run: |
