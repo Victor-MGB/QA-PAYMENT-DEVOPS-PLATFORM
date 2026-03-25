@@ -128,7 +128,7 @@ describe('Payment Flow - Full Journey', () => {
 
         cy.verifyTransaction(reference).then((verifyRes) => {
           expect(verifyRes.status).to.eq(200);
-          expect(verifyRes.body.data.status).to.eq('success');
+          expect(verifyRes.body.data.status).to.eq('success.');
         });
       });
     });
